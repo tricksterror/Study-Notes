@@ -344,3 +344,49 @@ signed main()
         cout << lca << "\n";
         return 0;
 }
+
+// edge deletion questions 
+
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long int
+
+const int N = 1e5+10, M = 1e9+7;
+
+vector<int> g[N], subtree_sum(N), val(N);
+
+void dfs(int vertex, int p = 0) {
+        subtree_sum[vertex] += val[vertex];
+        for (int child : g[vertex]) {
+                if (child == p) continue;
+                dfs(child, vertex);
+                subtree_sum[vertex] += subtree_sum[child];
+        }
+}
+
+signed main()
+{
+        std::ios_base::sync_with_stdio(NULL);
+        cin.tie(nullptr); cout.tie(nullptr);
+        #ifndef ONLINE_JUDGE
+        freopen("inputf.in", "r", stdin);
+        #endif
+        
+        int n;
+        cin >> n;
+        for (int i = 0; i < n-1; ++i) {
+                int v1, v2; 
+                cin >> v1 >> v2;
+                g[v1].push_back(v2); 
+                g[v2].push_back(v1);
+        }
+        dfs(1);
+        int ans = 0;
+        for (int i = 2; i <= n; i++) {
+                int part1 = subtree_sum[i];
+                int part2 = subtree_sum[1] - part1;
+                ans = (part1*part2)%M;
+        }
+        cout << ans << "\n";
+        return 0;
+}
