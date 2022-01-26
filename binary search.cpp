@@ -85,3 +85,47 @@ signed main()
         cout << setprecision(10) << pow(x, 1.0/n) << "\n";
         return 0;
 }
+
+
+// EKO problem lumberjack https://www.spoj.com/problems/EKO/
+// time complexity N*log(h)
+
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long int
+
+const int N = 1e6+10;
+
+int n, m, trees[N];
+
+bool iswoodsuff(int h) {
+        int wood = 0;
+        for (int i = 0; i < n; i++) {
+                if (trees[i] >= h) wood += (trees[i]-h);
+        }
+        return wood >= m;
+}
+
+signed main()
+{
+        ios::sync_with_stdio(false);
+        cin.tie(nullptr);
+        #ifndef ONLINE_JUDGE
+        freopen("inputf.in", "r", stdin);
+        #endif
+        
+        cin >> n >> m;
+        for (int i = 0; i < n; i++) {
+                cin >> trees[i];
+        }
+        int l = 0, h = 1e9, mid;
+        while (h - l > 1) {
+                mid = (h + l) >> 1;
+                if (iswoodsuff(mid)) l = mid;
+                else h = mid-1;
+        }
+        int ans = l;
+        if (iswoodsuff(h)) ans = h;
+        cout << ans << "\n";
+        return 0;
+}
