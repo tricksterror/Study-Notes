@@ -191,3 +191,5 @@ signed main()
         }
         return 0;
 }
+
+// cellular network(binary search with two pointer) https://codeforces.com/contest/702/problem/C 
