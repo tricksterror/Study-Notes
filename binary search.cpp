@@ -129,3 +129,65 @@ signed main()
         cout << ans << "\n";
         return 0;
 }
+
+//tle code of aggresive cows
+
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long int
+
+const int N = 1e5+10;
+int n, cows, pos[N];
+
+bool canplace(int x) {
+        int lastpos = -1, cows_cnt = cows;
+        for (int i = 0; i < n; i++) {
+                if (pos[i] - lastpos >= x || lastpos == -1) {
+                        cows_cnt--;
+                        lastpos = pos[i];
+                }
+                if (cows_cnt == 0) break;
+        }
+        return cows_cnt == 0;
+}
+
+void solve() {
+        cin >> n >> cows;
+        for (int i = 0; i < n; i++) {
+                cin >> pos[i];
+        }
+        sort(pos, pos+n);
+        int l = 0, h = 1e9, mid;
+        while (h - l > 1) {
+                mid = (h + l) >> 2;
+                int lastpos = -1, cows_cnt = cows;
+                for (int i = 0; i < n; i++) {
+                        if (pos[i] - lastpos >= mid || lastpos == -1) {
+                                cows_cnt--;
+                                lastpos = pos[i];
+                        }
+                        if (cows_cnt == 0) break;
+                }
+                if (cows_cnt == 0) l = mid;
+                else h = mid - 1;
+        }
+        int ans = l;
+        if (canplace(h)) ans = h;
+        cout << ans << "\n";
+}
+
+signed main()
+{
+        ios::sync_with_stdio(false); 
+        cin.tie(nullptr);
+        #ifndef ONLINE_JUDGE
+        freopen("inputf.in", "r", stdin);
+        #endif
+        
+        int _;
+        cin >> _;
+        for (_; _; _--) {
+                solve();
+        }
+        return 0;
+}
